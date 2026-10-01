@@ -3,6 +3,7 @@
 import { readFileSync } from 'node:fs';
 import pg from 'pg';
 import { localEnv } from './env.mjs';
+import { printTable } from './table.mjs';
 
 const file = process.argv[2];
 if (!file) {
@@ -24,7 +25,7 @@ try {
   const last = Array.isArray(res) ? res[res.length - 1] : res;
   if (last?.command === 'SELECT') {
     if (last.rows.length === 0) console.log(`${file}: no rows`);
-    else console.table(last.rows);
+    else printTable(last.rows);
   } else {
     console.log(`applied ${file}`);
   }

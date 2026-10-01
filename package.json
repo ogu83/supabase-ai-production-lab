@@ -8,8 +8,10 @@
     "db:stop": "supabase stop",
     "db:reset": "supabase db reset",
     "db:test": "supabase test db",
-    "demo:before": "node scripts/apply-sql.mjs ep1-rls-hardening/before/vulnerable.sql && node ep1-rls-hardening/exploit/run.mjs",
-    "demo:after": "node scripts/apply-sql.mjs supabase/migrations/20261001000100_ep1_rls_policies.sql && node ep1-rls-hardening/exploit/run.mjs",
+    "state:before": "node scripts/apply-sql.mjs ep1-rls-hardening/before/vulnerable.sql",
+    "state:after": "node scripts/apply-sql.mjs supabase/migrations/20261001000100_ep1_rls_policies.sql",
+    "demo:before": "npm run -s state:before && node ep1-rls-hardening/exploit/run.mjs",
+    "demo:after": "npm run -s state:after && node ep1-rls-hardening/exploit/run.mjs",
     "audit:db": "node scripts/apply-sql.mjs ep1-rls-hardening/audit.sql",
     "audit:keys": "node scripts/audit-client-keys.mjs"
   },

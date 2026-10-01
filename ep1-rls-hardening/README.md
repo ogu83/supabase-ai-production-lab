@@ -9,6 +9,9 @@ npm install && npm run db:start
 
 npm run demo:before   # apply before/vulnerable.sql, run the attacks
 npm run demo:after    # re-apply the hardened migration, run the same attacks
+
+npm run state:before  # switch to the vulnerable state without running the attacks
+npm run state:after   # switch back to the hardened state
 npm run db:test       # 20 pgTAP tests
 npm run audit:db      # read-only audit (audit.sql)
 npm run audit:keys -- ep1-rls-hardening/before/web-sample
@@ -17,30 +20,32 @@ npm run audit:keys -- ep1-rls-hardening/before/web-sample
 ## Before
 
 ```
-┌───────────────────────────────────────────────────────────┬──────────┬────────────────────────────────────────────────────────────────┐
-│ attack                                                    │ result   │ detail                                                         │
-├───────────────────────────────────────────────────────────┼──────────┼────────────────────────────────────────────────────────────────┤
-│ 1. Logged-out visitor reads chat messages                 │ LEAKED   │ "Draft the Henderson settlement offer; our ceiling is 1.2M."   │
-│ 2. Logged-out visitor lists every customer org            │ LEAKED   │ Acme Realty, Globex Legal                                      │
-│ 3. Alice discovers other tenants and their ids            │ LEAKED   │ Globex id e2e02f7d...                                          │
-│ 4. Alice forges user_metadata.org_id, reads Globex docs   │ LEAKED   │ "Henderson settlement terms": Confidential: client author...   │
-│ 5. Alice plants a prompt-injection doc in Globex RAG      │ LEAKED   │ Bob's knowledge base now returns it                            │
-└───────────────────────────────────────────────────────────┴──────────┴────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┬────────┬────────────────────────────────────────────────────────────────────────┐
+│ attack                                                  │ result │ detail                                                                 │
+├─────────────────────────────────────────────────────────┼────────┼────────────────────────────────────────────────────────────────────────┤
+│ 1. Logged-out visitor reads chat messages               │ LEAKED │ "Draft the Henderson settlement offer; our ceiling is 1.2M."           │
+│ 2. Logged-out visitor lists every customer org          │ LEAKED │ Acme Realty, Globex Legal                                              │
+│ 3. Alice discovers other tenants and their ids          │ LEAKED │ Globex id b1366ee4...                                                  │
+│ 4. Alice forges user_metadata.org_id, reads Globex docs │ LEAKED │ "Henderson settlement terms": Confidential: client authorizes settl... │
+│ 5. Alice plants a prompt-injection doc in Globex RAG    │ LEAKED │ Bob's knowledge base now returns it                                    │
+└─────────────────────────────────────────────────────────┴────────┴────────────────────────────────────────────────────────────────────────┘
+
 5 of 5 attacks leaked data across tenants.
 ```
 
 ## After
 
 ```
-┌───────────────────────────────────────────────────────────┬─────────┬────────────────────────────────────────────────────────────────┐
-│ attack                                                    │ result  │ detail                                                         │
-├───────────────────────────────────────────────────────────┼─────────┼────────────────────────────────────────────────────────────────┤
-│ 1. Logged-out visitor reads chat messages                 │ blocked │ permission denied for table chat_messages                      │
-│ 2. Logged-out visitor lists every customer org            │ blocked │ permission denied for table organizations                      │
-│ 3. Alice discovers other tenants and their ids            │ blocked │ 0 rows                                                         │
-│ 4. Alice forges user_metadata.org_id, reads Globex docs   │ blocked │ 0 rows                                                         │
-│ 5. Alice plants a prompt-injection doc in Globex RAG      │ blocked │ new row violates row-level security policy for table "doc...   │
-└───────────────────────────────────────────────────────────┴─────────┴────────────────────────────────────────────────────────────────┘
+┌─────────────────────────────────────────────────────────┬─────────┬──────────────────────────────────────────────────────────────────┐
+│ attack                                                  │ result  │ detail                                                           │
+├─────────────────────────────────────────────────────────┼─────────┼──────────────────────────────────────────────────────────────────┤
+│ 1. Logged-out visitor reads chat messages               │ blocked │ permission denied for table chat_messages                        │
+│ 2. Logged-out visitor lists every customer org          │ blocked │ permission denied for table organizations                        │
+│ 3. Alice discovers other tenants and their ids          │ blocked │ 0 rows                                                           │
+│ 4. Alice forges user_metadata.org_id, reads Globex docs │ blocked │ 0 rows                                                           │
+│ 5. Alice plants a prompt-injection doc in Globex RAG    │ blocked │ new row violates row-level security policy for table "documents" │
+└─────────────────────────────────────────────────────────┴─────────┴──────────────────────────────────────────────────────────────────┘
+
 All 5 attacks blocked.
 ```
 

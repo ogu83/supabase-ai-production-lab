@@ -23,6 +23,8 @@ npm run db:test       # pgTAP tenant-isolation tests
 
 npm run demo:before   # switch to the vulnerable state, run the five attacks
 npm run demo:after    # restore the hardened policies, run the same attacks
+npm run state:before  # just switch states (e.g. to run db:test or audit:db against the vulnerable version)
+npm run state:after
 
 npm run audit:db                                              # read-only RLS audit of the database
 npm run audit:keys -- ep1-rls-hardening/before/web-sample     # find RLS-bypassing keys in a frontend

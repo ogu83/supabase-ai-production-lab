@@ -11,6 +11,7 @@
 // Exits 1 when anything is found, so it can gate CI.
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import { join, relative, extname } from 'node:path';
+import { printTable } from './table.mjs';
 
 const root = process.argv[2];
 if (!root) {
@@ -67,7 +68,7 @@ for (const file of walk(root)) {
 if (findings.length === 0) {
   console.log(`No RLS-bypassing keys found under ${root}.`);
 } else {
-  console.table(findings);
+  printTable(findings);
   console.log(`\n${findings.length} finding(s). Rotate the key in the Supabase dashboard; deleting it from the code is not enough once it has shipped.`);
   process.exit(1);
 }
