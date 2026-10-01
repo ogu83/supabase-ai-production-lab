@@ -1,5 +1,7 @@
 # Episode 1 ; Your AI App Leaks Data: Supabase RLS Done Right
 
+**Watch the episode:** https://www.youtube.com/watch?v=9Jgt4AgupJ4
+
 A multi-tenant AI knowledge assistant, first in the state a typical Lovable / Bolt / Cursor build ships in, then hardened. Every attack below runs against the local stack using only what a real attacker has: the public anon key (it ships in every Supabase frontend) and their own login.
 
 ## Run it

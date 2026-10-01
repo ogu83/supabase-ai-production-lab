@@ -8,7 +8,7 @@ Your AI app works in the demo. This series is about what breaks when real users 
 
 | Episode | Folder | Topic |
 | --- | --- | --- |
-| Ep 1 ; Your AI App Leaks Data: Supabase RLS Done Right | [`ep1-rls-hardening/`](ep1-rls-hardening) | Four RLS mistakes exploited live, the hardened policies, pgTAP tenant-isolation tests, a reusable audit |
+| [Ep 1 ; Your AI App Leaks Data: Supabase RLS Done Right](https://www.youtube.com/watch?v=9Jgt4AgupJ4) | [`ep1-rls-hardening/`](ep1-rls-hardening) | Four RLS mistakes exploited live, the hardened policies, pgTAP tenant-isolation tests, a reusable audit |
 | Ep 2 ; RAG Inside Postgres *(coming)* | `ep2-rag-in-postgres/` | pgvector + full-text hybrid search with RRF in SQL, tenant-scoped retrieval, vs Qdrant |
 | Ep 3 ; Supabase + FastAPI *(coming)* | `ep3-fastapi-backend/` | Verifying Supabase JWTs in Python, keeping RLS behind your own API, Realtime agent status |
 
